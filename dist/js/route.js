@@ -931,69 +931,55 @@ module.exports = function (str, opts) {
 __webpack_require__.r(__webpack_exports__);
 
 // CONCATENATED MODULE: ./src/js/UrlBuilder.js
+class UrlBuilder {
+    constructor(name, absolute, ziggyObject) {
+        this.name = name;
+        this.ziggy = ziggyObject;
+        this.route = this.ziggy.namedRoutes[this.name];
+        if (typeof this.name === 'undefined') {
+            throw new Error('Ziggy Error: You must provide a route name');
+        }
+        else if (typeof this.route === 'undefined') {
+            throw new Error(`Ziggy Error: route '${this.name}' is not found in the route list`);
+        }
+        this.absolute = typeof absolute === 'undefined' ? true : absolute;
+        this.domain = this.setDomain();
+        this.path = this.route.uri.replace(/^\//, '');
+    }
+    setDomain() {
+        if (!this.absolute)
+            return '/';
+        if (!this.route.domain)
+            return this.ziggy.baseUrl.replace(/\/?$/, '/');
+        let host = (this.route.domain || this.ziggy.baseDomain).replace(/\/+$/, '');
+        if (this.ziggy.basePort && (host.replace(/\/+$/, '') === this.ziggy.baseDomain.replace(/\/+$/, '')))
+            host = this.ziggy.baseDomain + ':' + this.ziggy.basePort;
+        return this.ziggy.baseProtocol + '://' + host + '/';
+    }
+    construct() {
+        return this.domain + this.path;
+    }
+}
+/* harmony default export */ var js_UrlBuilder = (UrlBuilder);
+
+// EXTERNAL MODULE: ./node_modules/qs/lib/index.js
+var lib = __webpack_require__(2);
+
+// CONCATENATED MODULE: ./src/js/route.ts
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return route; });
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var UrlBuilder =
-/*#__PURE__*/
-function () {
-  function UrlBuilder(name, absolute, ziggyObject) {
-    _classCallCheck(this, UrlBuilder);
-
-    this.name = name;
-    this.ziggy = ziggyObject;
-    this.route = this.ziggy.namedRoutes[this.name];
-
-    if (typeof this.name === 'undefined') {
-      throw new Error('Ziggy Error: You must provide a route name');
-    } else if (typeof this.route === 'undefined') {
-      throw new Error("Ziggy Error: route '".concat(this.name, "' is not found in the route list"));
-    }
-
-    this.absolute = typeof absolute === 'undefined' ? true : absolute;
-    this.domain = this.setDomain();
-    this.path = this.route.uri.replace(/^\//, '');
-  }
-
-  _createClass(UrlBuilder, [{
-    key: "setDomain",
-    value: function setDomain() {
-      if (!this.absolute) return '/';
-      if (!this.route.domain) return this.ziggy.baseUrl.replace(/\/?$/, '/');
-      var host = (this.route.domain || this.ziggy.baseDomain).replace(/\/+$/, '');
-      if (this.ziggy.basePort && host.replace(/\/+$/, '') === this.ziggy.baseDomain.replace(/\/+$/, '')) host = this.ziggy.baseDomain + ':' + this.ziggy.basePort;
-      return this.ziggy.baseProtocol + '://' + host + '/';
-    }
-  }, {
-    key: "construct",
-    value: function construct() {
-      return this.domain + this.path;
-    }
-  }]);
-
-  return UrlBuilder;
-}();
-
-/* harmony default export */ var js_UrlBuilder = (UrlBuilder);
-// EXTERNAL MODULE: ./node_modules/qs/lib/index.js
-var lib = __webpack_require__(2);
-
-// CONCATENATED MODULE: ./src/js/route.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return route; });
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function route_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function route_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function route_createClass(Constructor, protoProps, staticProps) { if (protoProps) route_defineProperties(Constructor.prototype, protoProps); if (staticProps) route_defineProperties(Constructor, staticProps); return Constructor; }
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
@@ -1013,6 +999,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -1026,9 +1014,30 @@ function (_String) {
 
     var customZiggy = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
-    route_classCallCheck(this, Router);
+    _classCallCheck(this, Router);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Router).call(this));
+
+    _defineProperty(_assertThisInitialized(_this), "name", void 0);
+
+    _defineProperty(_assertThisInitialized(_this), "absolute", void 0);
+
+    _defineProperty(_assertThisInitialized(_this), "ziggy", void 0);
+
+    _defineProperty(_assertThisInitialized(_this), "urlBuilder", void 0);
+
+    _defineProperty(_assertThisInitialized(_this), "template", void 0);
+
+    _defineProperty(_assertThisInitialized(_this), "urlParams", void 0);
+
+    _defineProperty(_assertThisInitialized(_this), "queryParams", void 0);
+
+    _defineProperty(_assertThisInitialized(_this), "hydrated", void 0);
+
+    _defineProperty(_assertThisInitialized(_this), "numericParamIndices", void 0);
+
+    _defineProperty(_assertThisInitialized(_this), "return", void 0);
+
     _this.name = name;
     _this.absolute = absolute;
     _this.ziggy = customZiggy ? customZiggy : Ziggy;
@@ -1040,7 +1049,7 @@ function (_String) {
     return _this;
   }
 
-  route_createClass(Router, [{
+  _createClass(Router, [{
     key: "normalizeParams",
     value: function normalizeParams(params) {
       if (typeof params === 'undefined') return {}; // If you passed in a string or integer, wrap it in an array
@@ -1055,7 +1064,7 @@ function (_String) {
       }
 
       this.numericParamIndices = Array.isArray(params);
-      return _extends({}, params);
+      return _objectSpread({}, params);
     }
   }, {
     key: "with",
@@ -1066,8 +1075,7 @@ function (_String) {
   }, {
     key: "withQuery",
     value: function withQuery(params) {
-      _extends(this.queryParams, params);
-
+      this.queryParams = _objectSpread({}, this.queryParams, {}, params);
       return this;
     }
   }, {
@@ -1100,11 +1108,11 @@ function (_String) {
         } else {
           tagValue = _this2.urlParams[keyName];
           delete _this2.urlParams[keyName];
-        } // The type of the value is undefined; is this param
+        } // The value is null or defined; is this param
         // optional or not
 
 
-        if (typeof tagValue === 'undefined') {
+        if (tagValue == null) {
           if (tag.indexOf('?') === -1) {
             throw new Error("Ziggy Error: '" + keyName + "' key is required for route '" + _this2.name + "'");
           } else {
@@ -1157,10 +1165,9 @@ function (_String) {
     }
   }, {
     key: "current",
-    value: function current() {
+    value: function current(name) {
       var _this3 = this;
 
-      var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
       var routeNames = Object.keys(this.ziggy.namedRoutes);
       var currentRoute = routeNames.filter(function (name) {
         if (_this3.ziggy.namedRoutes[name].methods.indexOf('GET') === -1) {
@@ -1224,7 +1231,7 @@ function (_String) {
     key: "params",
     get: function get() {
       var namedRoute = this.ziggy.namedRoutes[this.current()];
-      return _extends(this.extractParams(window.location.hostname, namedRoute.domain || '', '.'), this.extractParams(window.location.pathname.slice(1), namedRoute.uri, '/'));
+      return _objectSpread({}, this.extractParams(window.location.hostname, namedRoute.domain || '', '.'), {}, this.extractParams(window.location.pathname.slice(1), namedRoute.uri, '/'));
     }
   }]);
 

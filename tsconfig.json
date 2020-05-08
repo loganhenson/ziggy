@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "./dist",
+    "lib": ["es2017", "dom"],
+    "target": "ES2017"
+  },
+  "include": ["src/js"]
+}

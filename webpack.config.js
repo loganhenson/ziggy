@@ -13,7 +13,7 @@ module.exports = {
       path.resolve(process.cwd(), 'node_modules'),
     ],
   },
-  entry: './src/js/route.js',
+  entry: './src/js/route.ts',
   output: {
     path: path.resolve(process.cwd(), 'dist/js'),
     filename: 'route.min.js',
@@ -26,7 +26,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.ts$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
       },

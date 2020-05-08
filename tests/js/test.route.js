@@ -2,7 +2,7 @@ let assert = require('assert');
 let axios = require('axios');
 let moxios = require('moxios');
 
-import route from '../../src/js/route.js';
+import route from '../../src/js/route.ts';
 
 global.Ziggy = {
     namedRoutes: {
